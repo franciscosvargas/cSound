@@ -1,8 +1,8 @@
 {
-  "name": "discoderia",
+  "name": "discoderia-backend",
   "version": "1.0.0",
-  "main": "index.js",
-  "repository": "git@github.com:franciscosvargas/Discoderia.git",
+  "main": "src/index.js",
+  "repository": "git@github.com:franciscosvargas/discoderia-backend.git",
   "author": "Francisco Alisson Vargas <falisson.sv@gmail.com>",
   "scripts": {
     "dev": "nodemon src/index.js",
@@ -10,7 +10,9 @@
   },
   "license": "MIT",
   "dependencies": {
+    "body-parser": "^1.19.0",
     "express": "^4.17.0",
-    "nodemon": "^1.19.0"
+    "nodemon": "^1.19.0",
+    "request": "^2.88.0"
   }
 }
