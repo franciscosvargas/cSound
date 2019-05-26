@@ -2,7 +2,6 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
 
-const User = require('./models/User')
 const Search = require('./controllers/search');
 const Auth = require('./controllers/auth');
 const app = express();
@@ -21,6 +20,10 @@ mongoose.connect(
 app.get('/search', Search.fetchResults);
 
 app.post('/auth/register', Auth.registerUser);
+app.post('/mobile/auth/', Auth.mobileAuthentication);
+
+require('./routes/mobile')(app);
+
 
 app.listen(process.env.PORT || 3001, () => {
 	console.log('Servidor iniciado com sucesso!');

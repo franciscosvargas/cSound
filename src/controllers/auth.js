@@ -1,12 +1,14 @@
 const request = require('request');
 const bcrypt = require('bcryptjs');
+const jwt = require('jsonwebtoken');
+const credentials = require('../credentials.json')
 
 
 const User = require('../models/User');
 
 
 class Auth {
-	getApplicationToken() {
+	getSpotifyApplicationToken() {
 		const credentials = Buffer.from("clientId:clientSecret")
 			.toString('base64');
 
@@ -34,10 +36,30 @@ class Auth {
 			req.body.password = await encrypt(req.body.password);
 			const user = await User.create(req.body);
 
-			return res.json(user);
+			user.password = undefined;
+			const token = jwt.sign({id: user._id}, credentials.secret, {expiresIn: 86400})
+			return res.json({user, token});
 		} catch (err) {
 			return Promise.reject(err);
 		}
+	}
+
+	async mobileAuthentication(req, res) {
+		const { email, password } = req.body;
+		const user = await User.findOne({email});
+
+		if(!user)
+			return res.status(401).send({error: 'Usuário não encontrado'})
+		
+		if(!await bcrypt.compare(password, user.password))
+			return res.status(401).send({error: 'Senha incorreta.'})
+
+		user.password = undefined;
+
+		const token = jwt.sign({id: user._id}, credentials.secret, {expiresIn: 86400});
+		res.send({user, token});	
+
+
 	}
 
 
