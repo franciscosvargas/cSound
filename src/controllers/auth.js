@@ -40,8 +40,7 @@ class Auth {
 			const token = jwt.sign({id: user._id}, credentials.secret, {expiresIn: 86400})
 			return res.json({user, token});
 		} catch (err) {
-			return Promise.reject(err);
-			res.status(400).send(err);
+			return res.status(400).send(err);
 		}
 	}
 
