@@ -41,6 +41,7 @@ class Auth {
 			return res.json({user, token});
 		} catch (err) {
 			return Promise.reject(err);
+			res.status(400).send(err);
 		}
 	}
 
